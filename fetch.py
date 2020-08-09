@@ -14,7 +14,7 @@ class StatusError(Exception):
 @retry()
 def open_request(url):
     return urlopen(Request(url, headers={
-        "User-Agent": "PyFcitxDictBot/1.0; github.com/outloudvi/fcitx5-pinyin-moegirl"
+        "User-Agent": "PyFcitxDictBot/1.0; github.com/oldherl/fcitx5-pinyin-minecraft"
     }))
 
 def fetch(url):
