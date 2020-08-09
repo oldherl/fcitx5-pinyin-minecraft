@@ -1,4 +1,6 @@
-MEDIAWIKI_API_ENDPOINT="https://zh.moegirl.org.cn/api.php"
+MOEGIRL_API_ENDPOINT="https://zh.moegirl.org.cn/api.php"
+MINECRAFT_API_ENDPOINT="https://minecraft-zh.gamepedia.com/api.php"
+
 
 all: build
 
@@ -7,7 +9,10 @@ build: moegirl.dict
 .PRECIOUS: titles.txt
 
 titles.txt:
-	python ./fetch.py $(MEDIAWIKI_API_ENDPOINT) titles.txt
+	python ./fetch.py get_all_titles $(MOEGIRL_API_ENDPOINT) titles.txt
+	
+mc-titles.txt:
+	python ./fetch.py get_all_titles $(MINECRAFT_API_ENDPOINT) mc-titles.txt
 
 results.txt: titles.txt
 	python ./collate_moegirl.py titles.txt
@@ -33,6 +38,7 @@ install_rime_dict: moegirl.dict.yaml
 
 clean:
 	rm -f results.txt titles.txt
+	rm -f mc-titles.txt
 	rm -f moegirl.{raw,rime.raw,dict{,.yaml}}
 	rm -f PKGBUILD.{pinyin,rime}
 	rm -f fcitx5-pinyin-moegirl*

@@ -2,7 +2,7 @@
 import sys
 import json
 from urllib.request import Request, urlopen
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, quote_plus
 from retry import retry
 
 
@@ -24,22 +24,38 @@ def fetch(url):
     else:
         raise StatusError(res.status)
 
+def get_all_titles(base_api_url, output_filename):
+    articles = []
+    data = fetch(base_api_url + "?action=query&list=allpages&format=json")
+    while True:
+        for i in map(lambda x: x["title"], data["query"]["allpages"]):
+            articles.append(i)
+        print("Got {} pages".format(len(articles)))
+        if "continue" in data:
+            data = fetch(base_api_url + "?action=query&list=allpages&format=json&aplimit=max&apcontinue={}".format(
+                quote_plus(data["continue"]["apcontinue"])))
+        else:
+            break
+    print("Finished.")
+    with open(output_filename, "w") as f:
+        f.write("\n".join(articles))
 
-API_PAGE = sys.argv[1]
-FILE = "titles.txt"
-if len(sys.argv) > 2:
-    FILE = sys.argv[2]
-articles = []
-data = fetch(API_PAGE + "?action=query&list=allpages&format=json")
-while True:
-    for i in map(lambda x: x["title"], data["query"]["allpages"]):
-        articles.append(i)
-    print("Got {} pages".format(len(articles)))
-    if "continue" in data:
-        data = fetch(API_PAGE + "?action=query&list=allpages&format=json&aplimit=max&apcontinue={}".format(
-            quote_plus(data["continue"]["apcontinue"])))
+def get_variant(base_api_url, page_title, variant):
+    data = fetch(base_api_url + "?action=query&prop=info&titles={}&inprop=varianttitles&format=json".format(quote_plus(page_title)))
+    for i in data['query']['pages']:
+        return (data['query']['pages'][i]['varianttitles'][variant])
+
+
+if __name__ == '__main__':
+    operation = sys.argv[1]
+    if operation == 'get_all_titles':
+        base_api_url = sys.argv[2]
+        output_filename = sys.argv[3]
+        get_all_titles(base_api_url, output_filename)
+    elif operation == 'get_variant':
+        base_api_url = sys.argv[2]
+        page_title = sys.argv[3]
+        get_variant(base_api_url, page_title, 'zh-cn')
     else:
-        break
-print("Finished.")
-with open(FILE, "w") as f:
-    f.write("\n".join(articles))
+        print('No operation specified.')
+    
