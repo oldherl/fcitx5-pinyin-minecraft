@@ -66,6 +66,7 @@ def process_title(str):
 
 def main():
     filename = sys.argv[1]
+    output_filename = sys.argv[2]
     with open(filename) as file:
         lines = file.read().split("\n")
         print(f"Read {len(lines)} titles.")
@@ -76,7 +77,7 @@ def main():
         print(f"Got {len(ret)} words with duplicate. Deduplicating.")
         results = dedup(ret)
         print(f"Got {len(ret)} valid words.")
-        with open("results.txt", "w") as ofile:
+        with open(output_filename, "w") as ofile:
             ofile.write("\n".join(results))
 
 

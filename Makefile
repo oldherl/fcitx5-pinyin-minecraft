@@ -1,5 +1,6 @@
 MOEGIRL_API_ENDPOINT="https://zh.moegirl.org.cn/api.php"
-MINECRAFT_API_ENDPOINT="https://minecraft-zh.gamepedia.com/api.php"
+MINECRAFT_API_ENDPOINT="https://zh.minecraft.wiki/api.php"
+ARCHWIKI_API_ENDPOINT="https://wiki.archlinux.org/api.php"
 
 
 all: build
@@ -8,23 +9,25 @@ build: moegirl.dict
 
 .PRECIOUS: titles.txt
 
-titles.txt:
-	python ./fetch.py get_all_titles $(MOEGIRL_API_ENDPOINT) titles.txt
-	
 mc-titles.txt:
 	python ./fetch.py get_all_titles $(MINECRAFT_API_ENDPOINT) mc-titles.txt
+mc-titles-cn.txt:
+	python ./fetch.py get_all_titles_in_variant $(MINECRAFT_API_ENDPOINT) mc-titles-cn.txt zh-cn
 
-results.txt: titles.txt
-	python ./collate_moegirl.py titles.txt
+mc-results-cn.txt: mc-titles-cn.txt
+	python ./collate_moegirl.py mc-titles-cn.txt mc-results-cn.txt
+	
+mc-cn.raw: mc-results-cn.txt
+	python ./convert.py mc-results-cn.txt > mc-cn.raw
 
-moegirl.raw: results.txt
-	python ./convert.py results.txt > moegirl.raw
-
-moegirl.dict: moegirl.raw
-	libime_pinyindict moegirl.raw moegirl.dict
+minecraft-cn.dict: mc-cn.raw
+	libime_pinyindict mc-cn.raw minecraft-cn.dict
 
 install: moegirl.dict
 	install -Dm644 moegirl.dict -t $(DESTDIR)/usr/share/fcitx5/pinyin/dictionaries/
+	
+install-mc: minecraft.dict
+	install -Dm644 minecraft.dict -t $(DESTDIR)/usr/share/fcitx5/pinyin/dictionaries/
 
 moegirl.dict.yaml: moegirl.raw
 	sed 's/[ ][ ]*/\t/g' moegirl.raw > moegirl.rime.raw
