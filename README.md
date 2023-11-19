@@ -1,28 +1,24 @@
-# moegirl.org dictionary for fcitx5-pinyin (or any MediaWiki instance!)
+# Minecraft dictionary for fcitx5-pinyin / 用于 fcitx5 拼音输入法的 Minecraft 词典
 
-## tl;dr
+## Upstream projects / 上游项目
 
-### Releases
+### mw2fcitx
+- Original name `fcitx5-pinyin-moegirl`. I am using the old [v1 branch](https://github.com/outloudvi/mw2fcitx/tree/v1).
 
-- **Update monthly on 15th**
-- Build status: [![CircleCI](https://circleci.com/gh/outloudvi/fcitx5-pinyin-moegirl.svg?style=svg)](https://circleci.com/gh/outloudvi/fcitx5-pinyin-moegirl)
-- [Download the latest version](https://github.com/outloudvi/fcitx5-pinyin-moegirl/releases/latest) for fcitx5-pinyin, fcitx5-rime, as well as pre-built packages for Arch Linux users
+### Minecraft Wiki
+- All entries come from page titles of [中文 Minecraft Wiki](https://zh.minecraft.wiki/).
+- Thanks to all contributors for releasing the content in a free license and providing the API to download!
 
-### [archlinuxcn]
+## Installation / 安装
 
-Thanks for [@imlonghao](https://github.com/imlonghao) ([archlinuxcn/repo@6ca3779](https://github.com/archlinuxcn/repo/commit/6ca3779c99fc1115dc1e9b1cfdf9ffbc67825b96)), this dictionary is available packaged at the [archlinuxcn](https://github.com/archlinuxcn/repo) repository.
+### AUR / [archlinuxcn] repo
 
-## Installation
+- TODO.
 
-### Arch Linux
+### From Github Release
 
-1. Install the package `fcitx5-pinyin-moegirl` / `fcitx5-pinyin-moegirl-rime` from releases (or [[archlinuxcn]](https://github.com/archlinuxcn/repo)!).
-
-### Others
-
-1. Download latest version of `moegirl.dict` (for fcitx5-pinyin) / `moegirl.dict.yaml` (for RIME) from releases.
-2. Copy it to `/usr/share/fcitx5/pinyin/dictionaries/` (for fcitx5-pinyin) / `/usr/share/rime-data/` (for RIME).
-3. (for RIME) Add this dictionary to your config.
+1. Download latest version of `minecraft-cn.dict` (for fcitx5-pinyin) from releases.
+2. Copy it to `/usr/share/fcitx5/pinyin/dictionaries/` (for fcitx5-pinyin) or import it from fcitx5 config tool.
 
 ## Build Requirements
 
@@ -35,17 +31,15 @@ Python modules:
 
 Manual Build & Installation:
 
-```
-make
-sudo make install
-```
-
-## Report Pinyin Transformation Errors
-
-Send issues or PRs on [`manual_fix.json`](https://github.com/outloudvi/fcitx5-pinyin-moegirl/blob/master/manual_fix.json).
+Please read the `Makefile` to figure it out.
 
 ## License
 
-Unlicense
+### Code in this project
 
-Note that the generated dictionary follows Moegirl.org's license: <https://zh.moegirl.org/萌娘百科:版权信息>
+- Unlicense. This is the choice of mw2fcitx and I might change it in the future.
+
+### Generated minecraft dictionary
+
+- CC BY-NC-SA 3.0 according to <https://zh.minecraft.wiki/w/Minecraft_Wiki:著作权>
+
