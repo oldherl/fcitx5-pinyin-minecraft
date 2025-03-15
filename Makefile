@@ -5,9 +5,7 @@ ARCHWIKI_API_ENDPOINT="https://wiki.archlinux.org/api.php"
 
 all: build
 
-build: moegirl.dict
-
-.PRECIOUS: titles.txt
+build: minecraft-cn.dict
 
 mc-titles.txt:
 	python ./fetch.py get_all_titles $(MINECRAFT_API_ENDPOINT) mc-titles.txt
@@ -23,21 +21,9 @@ mc-cn.raw: mc-results-cn.txt
 minecraft-cn.dict: mc-cn.raw
 	libime_pinyindict mc-cn.raw minecraft-cn.dict
 
-install: moegirl.dict
-	install -Dm644 moegirl.dict -t $(DESTDIR)/usr/share/fcitx5/pinyin/dictionaries/
-	
 install-mc: minecraft.dict
 	install -Dm644 minecraft.dict -t $(DESTDIR)/usr/share/fcitx5/pinyin/dictionaries/
 
-moegirl.dict.yaml: moegirl.raw
-	sed 's/[ ][ ]*/\t/g' moegirl.raw > moegirl.rime.raw
-	sed -i 's/\t0//g' moegirl.rime.raw
-	sed -i "s/'/ /g" moegirl.rime.raw
-	echo -e '---\nname: moegirl\nversion: "0.1"\nsort: by_weight\n...\n' >> moegirl.dict.yaml
-	cat moegirl.rime.raw >> moegirl.dict.yaml
-
-install_rime_dict: moegirl.dict.yaml
-	install -Dm644 moegirl.dict.yaml -t $(DESTDIR)/usr/share/rime-data/
 
 clean:
 	rm -f results.txt titles.txt
