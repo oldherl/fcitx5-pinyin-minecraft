@@ -21,14 +21,8 @@ mc-cn.raw: mc-results-cn.txt
 minecraft-cn.dict: mc-cn.raw
 	libime_pinyindict mc-cn.raw minecraft-cn.dict
 
-install-mc: minecraft.dict
-	install -Dm644 minecraft.dict -t $(DESTDIR)/usr/share/fcitx5/pinyin/dictionaries/
-
 
 clean:
-	rm -f results.txt titles.txt
-	rm -f mc-titles.txt
-	rm -f moegirl.{raw,rime.raw,dict{,.yaml}}
-	rm -f PKGBUILD.{pinyin,rime}
-	rm -f fcitx5-pinyin-moegirl*
-	rm -rf src/ pkg/
+	rm -f mc-titles{,-cn}.txt
+	rm mc-cn.raw
+	rm minecraft-cn.dict
